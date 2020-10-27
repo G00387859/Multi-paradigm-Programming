@@ -28,13 +28,12 @@ struct Customer {
 void printProduct(struct Product p)
 {
 	printf("PRODUCT NAME: %s \nPRODUCT PRICE: %.2f\n", p.name, p.price);
-	printf("-------------\n");
+	//printf("-------------\n");
 }
 
 void printCustomer(struct Customer c)
 {
 	printf("CUSTOMER NAME: %s \nCUSTOMER BUDGET: %.2f\n", c.name, c.budget);
-	printf("-------------\n");
 	for(int i = 0; i < c.index; i++)
 	{
 		printProduct(c.shoppingList[i].product);
@@ -60,9 +59,10 @@ struct Shop createAndStockShop()
     while(fgets(line,sizeof(line),fp)) {
         char *token;
         token = strtok(line,"");
-        while(token != NULL){
+       while(token != NULL){
             token = strtok(NULL, ",");
             char *n = strtok(line,",");
+           // printf("------n%s ",n);
             char *p = strtok(NULL,",");
             char *q = strtok(NULL,",");
             char *name = malloc(sizeof(char)* 50);
@@ -78,7 +78,7 @@ struct Shop createAndStockShop()
 
 	return shop;
 }
-
+// this method will print the stock of the shop.
 void printShop(struct Shop s)
 {
 	printf("Shop has %.2f in cash\n", s.cash);
@@ -86,24 +86,26 @@ void printShop(struct Shop s)
 	{
 		printProduct(s.stock[i].product);
 		printf("The shop has %d of the above\n", s.stock[i].quantity);
+		printf("-------------\n");
 	}
 }
 
 int main(void)
 {
-	// struct Customer dominic = { "Dominic", 100.0 };
+    //the customer
+	//struct Customer dominic = { "Dominic", 100.0 };
 	//
-	// struct Product coke = { "Can Coke", 1.10 };
-	// struct Product bread = { "Bread", 0.7 };
+	//struct Product coke = { "Can Coke", 1.10 };
+	//struct Product bread = { "Bread", 0.7 };
 	// // printProduct(coke);
 	//
-	// struct ProductStock cokeStock = { coke, 20 };
-	// struct ProductStock breadStock = { bread, 2 };
+    //struct ProductStock cokeStock = { coke, 20 };
+	//struct ProductStock breadStock = { bread, 2 };
 	//
-	// dominic.shoppingList[dominic.index++] = cokeStock;
-	// dominic.shoppingList[dominic.index++] = breadStock;
+	//dominic.shoppingList[dominic.index++] = cokeStock;
+	//dominic.shoppingList[dominic.index++] = breadStock;
 	//
-	// printCustomer(dominic);
+	//printCustomer(dominic);
 
 	struct Shop shop = createAndStockShop();
 	printShop(shop);
