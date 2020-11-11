@@ -1,0 +1,28 @@
+main method:
+shop is created and state is updated based on the customers inteaction, 
+csv file will be updated to refelect the current stock
+customer: 
+	name, budget
+product: 
+	name, price
+productStock: 
+	product, quantity
+	
+shop:
+will be created. 
+read csv file stock. 
+ask for single customer or bulk
+In the single case: 
+	the custome will be allowed to buy anything, 
+	until there budget is gone or if the customer is finished purshing goods.
+	In this case the while loop set to true. 
+	check product stock : read the csv and print out to the customer.
+	ask for the customers name and budget.
+	give the customer options: 
+		1. what product
+		2. how many of the product.
+		3. procde to checkout
+		the give subtotal. 
+		loop again until the customer is ready to checkout. 
+		Give the total. sutract from budget and update the stock.
+		stock.csv will be overwritten to reflect the remaining stock.	
