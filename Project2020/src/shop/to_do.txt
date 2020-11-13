@@ -1,0 +1,12 @@
+Done. the stock and price in there own dict. 
+1.Generate while loop that will ask if individual customer or bulk order.
+2. if individual order then: 
+			a. check budget is great that zero
+			b. print the stock name, price and quanitity. (done)
+			c. allow the customer add items to basket. 
+			d. when customer is complete adding to basket then sum up total price of goods
+			e. if good are greater than there budget then tell customer not enough money.
+			f. goods are less than customers budget then 
+									decrease customers budget, 
+									decrease stock.
+			g.re print new stock.
