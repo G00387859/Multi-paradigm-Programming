@@ -3,9 +3,9 @@ package shop;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Dictionary;
+//import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
+//import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,6 +18,7 @@ public class Shop {
 	 */
 	public static void main(String[] args) {
 		// Customer customer1 = new Customer("Donal", 120);
+		
 		Product product = new Product();
 		Shop shop = new Shop();
 		shop.readAndStore(product);
@@ -26,10 +27,10 @@ public class Shop {
 		try {
 			System.out.println("******* WELCOME TO THE SHOP *******");
 			while (true) {
-
+				double shopMoney = 0;
 				customer = new Scanner(System.in);
 				System.out.println(
-						"Please enter 1 for standard Customer\nEnter 2 for Bulk orders\nOR\n0(zero) to exit\n");
+						"Please enter 1 for standard Customer\nEnter 2 for Bulk orders\nOR\n0(z1ero) to exit\n");
 
 				int choice = Integer.parseInt(customer.nextLine()); // Read user input
 				System.out.println("Debug Customer choice is: " + choice); // Output user input
@@ -43,6 +44,8 @@ public class Shop {
 					System.out.println("Debug Customer choice is: " + choice); // Output user input
 					product.printProducts();
 					shop.checkOut(product, customer1);
+					shopMoney += product.getProductsTotal();
+					println("shop money is " + shopMoney);
 
 				} else if (choice == 2) {
 					System.out.println("Please enter your name:");
@@ -53,11 +56,19 @@ public class Shop {
 					// System.out.println("please enter fileName");
 					// nt custBudget = customer.nextInt();
 					Customer customer1 = new Customer(custName, custBudget);
-					product.printProducts();
-					shop.BulkCheckOut(product, customer1, "bulkOrder1.csv");
+					//product.printProducts();
+					System.out.println("please 1 for standard bulkorder or 2 for bulk order that will be greater than the shop stock");
+					int bulkFile = customer.nextInt(); // Read user input
+					if (bulkFile ==1) {
+						shop.BulkCheckOut(product, customer1, "bulkOrder1.csv");
+					}else if (bulkFile == 2) {
+						shop.BulkCheckOut(product, customer1, "bulkOrder2.csv");
+					}
+					println("shop money is " + shopMoney);
+					shopMoney += product.getProductsTotal();
 				} else if (choice == 0) {
 					System.out.println("Thank You !\nGoodbye "); // Output user input
-					System.out.println("Call order review"); // Output user input
+					//System.out.println(order); // Output user input
 					break;
 				} else {
 					throw new InputMismatchException("incorrect input - You must enter 1,2 or 0.");
@@ -69,55 +80,71 @@ public class Shop {
 		}
 	}
 
+	private static void println(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * @param product
 	 * @param cust
 	 */
-	public void checkOut(Product product, Customer cust) {
+	public double checkOut(Product product, Customer cust) {
 		HashMap<String, Integer> custOrdered = new HashMap<String, Integer>();
-		// customer order
-		//custOrdered = product.Order();
-		if (cust.getBudget() < product.productsTotal) {
+		double shopMoney = 100;
+		//customer order
+		custOrdered = product.Order();
+		if (cust.getBudget() < product.getProductsTotal()) {
 			System.out.println(cust + " ordered " + custOrdered.toString());
-			System.out.printf("Total cost is \u20ac%.2f\n", product.productsTotal);
+			System.out.printf("Total cost is \u20ac%.2f\n", product.getProductsTotal());
+			//shopMoney += product.getProductsTotal();
 			System.out.println("**** Checking Budget ****");
 			System.out.println("**** Sorry you do not have enough money ****");
 		} else {
 			System.out.println(cust + " ordered " + custOrdered.toString());
-			System.out.printf("Total cost is \u20ac%.2f\n", product.productsTotal);
+			System.out.printf("Total cost is \u20ac%.2f\n", product.getProductsTotal());
 			System.out.println("**** Budget checked! ****");
-			double moneyReturned = cust.getBudget() - product.productsTotal;
+			shopMoney += product.getProductsTotal();
+			System.out.println("ShopMoney "+shopMoney);
+			double moneyReturned = cust.getBudget() - product.getProductsTotal();
+			shopMoney = product.getProductsTotal();
 			cust.setBudget(moneyReturned);
 			System.out.printf("**** budget remaining \u20ac%.2f  ****", moneyReturned);
 			// update stock.
 			product.updateStock(custOrdered);
+			shopMoney = product.getProductsTotal();
 			System.out.println("");
-			product.printProducts();
+			
+			//product.printProducts();
 		}
+		return shopMoney;
 	}
+	
 
 	// bulkOrder1
-	public void BulkCheckOut(Product product, Customer cust, String fileName) {
+	public double BulkCheckOut(Product product, Customer cust, String fileName) {
 		HashMap custOrdered = new HashMap<String, Integer>();
+		double shopMoney =0;
 		// customer order
 		custOrdered = product.BulkOrder(fileName);
-		if (cust.getBudget() < product.productsTotal) {
+		if (cust.getBudget() < product.getProductsTotal()) {
 			System.out.println(cust + " ordered " + custOrdered.toString());
-			System.out.printf("Total cost is \u20ac%.2f\n", product.productsTotal);
+			System.out.printf("Total cost is \u20ac%.2f\n", product.getProductsTotal());
 			System.out.println("**** Checking Budget ****");
 			System.out.println("**** Sorry you do not have enough money ****");
 		} else {
 			System.out.println(cust + " ordered " + custOrdered.toString());
-			System.out.printf("Total cost is \u20ac%.2f\n", product.productsTotal);
+			System.out.printf("Total cost is \u20ac%.2f\n", product.getProductsTotal());
 			System.out.println("**** Budget checked! ****");
-			double moneyReturned = cust.getBudget() - product.productsTotal;
+			double moneyReturned = cust.getBudget() - product.getProductsTotal();
 			cust.setBudget(moneyReturned);
 			System.out.printf("**** budget remaining \u20ac%.2f  ****", moneyReturned);
 			// update stock.
 			product.updateStock(custOrdered);
 			System.out.println("");
-			product.printProducts();
+			//product.printProducts();
 		}
+		return product.getProductsTotal();
 	}
 
 	/**

@@ -19,9 +19,13 @@ public class Product implements ProductStock {
 //	private Enumeration<Double> price;
 //	private Enumeration<Integer> quantity;
 	private Set<String> stockKeys = ProductStock.shopStock.keySet();
+	public double getProductsTotal() {
+		return productsTotal;
+	}
+
 	private Collection<Integer> stockValues = ProductStock.shopStock.values();
 	private Collection<Double> priceValues = ProductStock.shopPrice.values();
-	protected double productsTotal = 0.0;
+	private double productsTotal = 0.0;
 	ArrayList<String> arrkeys = new ArrayList<String>();
 
 	// no parameter constructor
@@ -48,13 +52,14 @@ public class Product implements ProductStock {
 		}
 	}
 
-	public Dictionary Order() {
-		Dictionary<String, Integer> custOrder = new Hashtable<String, Integer>();
+	public HashMap<String, Integer> Order() {
+		HashMap<String, Integer> custOrder = new HashMap<String, Integer>();
 		// arraylist of keys.
 
 		Scanner customerOrder = new Scanner(System.in); // Create a Scanner object
 		Scanner OrderQuantity = new Scanner(System.in); // Create a Scanner object
-		while (true) {
+		int exit =1;
+		while (exit != 0) {
 			System.out.println("Please enter product name or exit to exit");
 
 			String choice = customerOrder.nextLine().toLowerCase().trim(); // Read user input
@@ -107,8 +112,9 @@ public class Product implements ProductStock {
 				System.out.println("Customer choice is: " + choice1); // Output user input
 				custOrder.put("Bin Bags", choice1);// ("spaghetti",choice1);
 				arrkeys.add("Bin Bags");
-			} else {
-				break;
+			} else if (choice.equals("exit")){
+				System.out.println("Customer choice is exit! "); // Output user input
+				exit =0;
 			}
 		}
 		return custOrder;
@@ -132,53 +138,91 @@ public class Product implements ProductStock {
 		      for (String i : bulkOrder.keySet()) {
 				//System.out.println("Debug BulkOrder 2 2nd while + i " + i);
 				if (i.equals("Spaghetti")) {
-					System.out.println(i+": Price is: \u20ac" + ProductStock.shopPrice.get("Spaghetti") + " Shop stock "
-							+ ProductStock.shopStock.get("Spaghetti"));
-					// System.out.println("Enter the quantity");
-					int choice1 = bulkOrder.get("Spaghetti");
-					productsTotal += choice1 * ProductStock.shopPrice.get("Spaghetti");
-					//System.out.println("Customer choice is: " + choice1); // Output user input
-					custOrder.put("Spaghetti", choice1);// ("spaghetti",choice1);
-					arrkeys.add("Spaghetti");
-
+					double shopPrice = ProductStock.shopPrice.get("Spaghetti");
+					int shopStock = ProductStock.shopStock.get("Spaghetti");
+					int CustOrder = bulkOrder.get("Spaghetti");
+					if(CustOrder < shopStock) {
+						System.out.println(i+": Price is: \u20ac" + ProductStock.shopPrice.get("Spaghetti") + " Shop stock "
+								+ ProductStock.shopStock.get("Spaghetti"));
+						// System.out.println("Enter the quantity");
+						int choice1 = bulkOrder.get("Spaghetti");
+						productsTotal += choice1 * ProductStock.shopPrice.get("Spaghetti");
+						//System.out.println("Customer choice is: " + choice1); // Output user input
+						custOrder.put("Spaghetti", choice1);// ("spaghetti",choice1);
+						arrkeys.add("Spaghetti");
+					}else {
+						System.out.println(CustOrder + " is greater that the shop stock");
+					}
 				}else if (i.equals("Coke Can")) {
-					System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n", ProductStock.shopPrice.get("Coke Can"),
-							ProductStock.shopStock.get("Coke Can"));
-					//System.out.println("Enter the quantity");
-					int choice1 = bulkOrder.get("Coke Can");
-					productsTotal += choice1 * ProductStock.shopPrice.get("Coke Can");
-					//System.out.println("Customer choice is: " + choice1); // Output user input
-					custOrder.put("Coke Can", choice1);// ("spaghetti",choice1);
-					arrkeys.add("Coke Can");
-				
+					double shopPrice = ProductStock.shopPrice.get("Coke Can");
+					int shopStock = ProductStock.shopStock.get("Coke Can");
+					int CustOrder = bulkOrder.get("Coke Can");
+					if(CustOrder < shopStock) {
+						System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n", ProductStock.shopPrice.get("Coke Can"),
+								ProductStock.shopStock.get("Coke Can"));
+						//System.out.println("Enter the quantity");
+						int choice1 = bulkOrder.get("Coke Can");
+						productsTotal += choice1 * ProductStock.shopPrice.get("Coke Can");
+						//System.out.println("Customer choice is: " + choice1); // Output user input
+						custOrder.put("Coke Can", choice1);// ("spaghetti",choice1);
+						arrkeys.add("Coke Can");
+					}else {
+						System.out.println(CustOrder + " is greater that the shop stock");
+					}				
 
 				} else if (i.equals("Bread")) {
-					System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n", ProductStock.shopPrice.get("Bread"),
-							ProductStock.shopStock.get("Bread"));
-					int choice1 = bulkOrder.get("Bread");
-					productsTotal += choice1 * ProductStock.shopPrice.get("Bread");
-					//System.out.println("Customer choice is: " + choice1); // Output user input
-					custOrder.put("Bread", choice1);// ("spaghetti",choice1);
-					arrkeys.add("Bread");
+					double shopPrice = ProductStock.shopPrice.get("Bread");
+					int shopStock = ProductStock.shopStock.get("Bread");
+					int CustOrder = bulkOrder.get("Bread");
+					if(CustOrder < shopStock) {
+						System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n", ProductStock.shopPrice.get("Bread"),
+								ProductStock.shopStock.get("Bread"));
+						int choice1 = bulkOrder.get("Bread");
+						productsTotal += choice1 * ProductStock.shopPrice.get("Bread");
+						//System.out.println("Customer choice is: " + choice1); // Output user input
+						custOrder.put("Bread", choice1);// ("spaghetti",choice1);
+						arrkeys.add("Bread");
+						
+					}else {
+						System.out.println(CustOrder + " is greater that the shop stock");
+					}
+					
 					
 				} else if(i.equals("Tomato Sauce")) {
-					System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n",
-							ProductStock.shopPrice.get("Tomato Sauce"), ProductStock.shopStock.get("Tomato Sauce"));
-					//System.out.println("Enter the quantity");
-					int choice1 = bulkOrder.get("Tomato Sauce");
-					productsTotal += choice1 * ProductStock.shopPrice.get("Tomato Sauce");
-					//System.out.println("Customer choice is: " + choice1); // Output user input
-					custOrder.put("Tomato Sauce", choice1);// ("spaghetti",choice1);
-					arrkeys.add("Tomato Sauce");
+					double shopPrice = ProductStock.shopPrice.get("Tomato Sauce");
+					int shopStock = ProductStock.shopStock.get("Tomato Sauce");
+					int CustOrder = bulkOrder.get("Tomato Sauce");
+					if(CustOrder < shopStock) {
+						System.out.printf(i+" :Price is: \u20ac%.2f Shop stock %d\n",
+								ProductStock.shopPrice.get("Tomato Sauce"), ProductStock.shopStock.get("Tomato Sauce"));
+						//System.out.println("Enter the quantity");
+						int choice1 = bulkOrder.get("Tomato Sauce");
+						productsTotal += choice1 * ProductStock.shopPrice.get("Tomato Sauce");
+						//System.out.println("Customer choice is: " + choice1); // Output user input
+						custOrder.put("Tomato Sauce", choice1);// ("spaghetti",choice1);
+						arrkeys.add("Tomato Sauce");
+					}else {
+						System.out.println(CustOrder + " is greater that the shop stock");
+					}
+					
 				}else if (i.equals("Bin Bags")) {
-					System.out.println(i+" :Price is: \u20ac" + ProductStock.shopPrice.get("Bin Bags") + " Shop stock "
-							+ ProductStock.shopStock.get("Bin Bags"));
-					//System.out.println("Enter the quantity");
-					int choice1 = bulkOrder.get("Bin Bags");
-					productsTotal += choice1 * ProductStock.shopPrice.get("Bin Bags");
-					//System.out.println("Customer choice is: " + choice1); // Output user input
-					custOrder.put("Bin Bags", choice1);// ("spaghetti",choice1);
-					arrkeys.add("Bin Bags");
+					double shopPrice = ProductStock.shopPrice.get("Tomato Sauce");
+					int shopStock = ProductStock.shopStock.get("Tomato Sauce");
+					int CustOrder = bulkOrder.get("Tomato Sauce");
+					if(CustOrder < shopStock) {
+						System.out.println(i+" :Price is: \u20ac" + ProductStock.shopPrice.get("Bin Bags") + " Shop stock "
+								+ ProductStock.shopStock.get("Bin Bags"));
+						//System.out.println("Enter the quantity");
+						int choice1 = bulkOrder.get("Bin Bags");
+						productsTotal += choice1 * ProductStock.shopPrice.get("Bin Bags");
+						//System.out.println("Customer choice is: " + choice1); // Output user input
+						custOrder.put("Bin Bags", choice1);// ("spaghetti",choice1);
+						arrkeys.add("Bin Bags");
+					}else {
+						System.out.println(CustOrder + " is greater that the shop stock");
+						
+					}
+					
 				} else {
 					System.out.printf("sorry %s not is stock\n",i);
 				}
